@@ -7,7 +7,7 @@ const isLocalhost = isBrowser
 
 const API_BASE_URL = isLocalhost
   ? "http://localhost:3400" 
-  : "https://your-backend.vercel.app";
+  : "https://final-year-project-rk87.onrender.com";
 
 // 2. Handle Browser Global
 if (isBrowser) {
@@ -17,4 +17,5 @@ if (isBrowser) {
 // 3. Handle Node.js Export (Required for your 'require' in 2.js)
 if (typeof module !== "undefined" && module.exports) {
     module.exports = { backend_URL: API_BASE_URL };
+
 }
