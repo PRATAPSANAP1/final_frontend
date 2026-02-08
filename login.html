@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="loginPageTitle">Login - Jobsy</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="./config.js"></script>
+    <style>
+        .login-container {
+            min-height: calc(105vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('Images/Background.jpeg') no-repeat center center;
+            background-size: cover;
+            padding: 20px;
+            position: relative
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(56, 73, 182, 0.6);
+            z-index: 0
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2)
+        }
+
+        .login-card h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #111;
+            font-size: 2rem
+        }
+
+        .login-card label {
+            display: block;
+            margin-bottom: 20px
+        }
+
+        .login-card label span {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333
+        }
+
+        .login-card input,
+        .login-card select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #fff;
+            color: #333
+        }
+
+        .login-card input::placeholder {
+            color: #999
+        }
+
+        .login-card button {
+            width: 100%;
+            padding: 12px;
+            background: #6366f1;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px
+        }
+
+        .login-card button:hover {
+            background: #4f46e5
+        }
+
+        .form-switch {
+            text-align: center;
+            margin-top: 20px;
+            color: #666
+        }
+
+        .form-switch a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 500
+        }
+
+        .form-switch a:hover {
+            text-decoration: underline
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">Jobsy</a>
+            <div class="right-section">
+                <select id="language" class="lang-select">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="mr">मराठी</option>
+                </select>
+            </div>
+        </div>
+    </header>
+    <div class="login-container">
+        <div class="login-card">
+            <h2 data-i18n="loginHeading">Login</h2>
+            <form id="loginForm">
+                <label>
+                    <span data-i18n="roleLabel">Role</span>
+                    <select id="role">
+                        <option value="candidate" data-i18n="candidate">Candidate</option>
+                        <option value="company" data-i18n="company">Company</option>
+                        <option value="government" data-i18n="government">Government</option>
+                    </select>
+                </label>
+                <label>
+                    <span data-i18n="idLabel">Email or Mobile</span>
+                    <input type="text" id="email" data-i18n="emailMobilePlaceholder" placeholder="Enter email or mobile"
+                        required>
+                </label>
+                <label>
+                    <span data-i18n="passwordLabel">Password</span>
+                    <input type="password" id="password" data-i18n="passwordPlaceholder" placeholder="Enter password"
+                        required>
+                </label>
+                <button type="submit" data-i18n="loginBtn">Login</button>
+            </form>
+            <div class="form-switch">
+                <p><span data-i18n="noAccountText">Don't have an account?</span> <a href="register.html"
+                        data-i18n="registerHereLink">Register here</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        document.getElementById("email").value="";
+            document.getElementById("password").value="";
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById("loginForm");
+            const roleSelect = document.getElementById("role");
+
+            if (loginForm) {
+                loginForm.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const role = roleSelect.value;
+                    const email = document.getElementById("email").value;
+                    const password = document.getElementById("password").value;
+
+                    try {
+                        const response = await fetch(`${backend_URL}/api/signin`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email: email, password: password, role: role }),
+                            credentials: "include"
+                        });
+
+                        const data = await response.json();
+                        console.log("Login response:", data);
+
+                        if (data.success) {
+                            showSuccess("Login successful!");
+                            setTimeout(() => {
+                                if (data.role === "candidate") {
+                                    window.location.href = "candidate.html";
+                                } else if (data.role === "company") {
+                                    window.location.href = "company.html";
+                                } else if (data.role === "government") {
+                                    window.location.href = "government.html";
+                                } else {
+                                    showError("Unknown role, cannot redirect");
+                                }
+                            }, 1000);
+                        } else {
+                            showError(data.message || "Login failed. Please check credentials.");
+                        }
+                    } catch (error) {
+                        console.error("Login error:", error);
+                        showError("Error connecting to server. Please try again later.");
+                    }
+                });
+            }
+            
+        });
+
+    </script>
+</body>
+
+</html>

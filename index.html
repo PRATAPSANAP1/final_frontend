@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jobsy</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="./config.js"></script>
+</head>
+<body>
+<div id="mainOverlay" class="overlay"></div>
+<header>
+<div class="header-container">
+<a href="#" class="logo">Jobsy</a>
+<div class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('active');document.getElementById('mainOverlay').classList.toggle('active')">☰</div>
+<nav>
+<a href="#home" data-i18n="homeLink">Home</a>
+<a href="#about" data-i18n="aboutLink">About Us</a>
+<a href="#services" data-i18n="serviceLink">Services</a>
+</nav>
+<div class="right-section">
+<a href="login.html" class="btn btn-login" data-i18n="loginLink">Login</a>
+<a href="register.html" class="btn btn-register" data-i18n="registerLink">Register</a>
+<select id="language">
+<option value="en">English</option>
+<option value="hi">हिन्दी</option>
+<option value="mr">मराठी</option>
+</select>
+</div>
+</div>
+</header>
+<main class="container">
+<section class="hero-section" id="home">
+<div class="hero-background">
+<div class="gradient-orb orb-1"></div>
+<div class="gradient-orb orb-2"></div>
+<div class="gradient-orb orb-3"></div>
+</div>
+<div class="hero-content">
+<div class="hero-badge" data-i18n="heroBadge">Verified Internships Platform</div>
+<h1 data-i18n="heroHeading">Find Safe Internships. Build Real Skills.</h1>
+<p data-i18n="heroText">Stop worrying about fake postings. We verify every internship, track your skill gaps, and help you grow with personalized roadmaps.</p>
+<div class="hero-buttons">
+<a href="register.html" class="btn primary"><span data-i18n="getStartedBtn">Get Started</span><i class="fas fa-arrow-right"></i></a>
+<a href="#about" class="btn secondary"><span data-i18n="learnMoreBtn">Learn More</span></a>
+</div>
+</div>
+</section>
+<section class="about-section" id="about">
+<h1 data-i18n="aboutHeading">About Us</h1>
+<p data-i18n="aboutText">We're building a safer way for students to find internships. Too many fake postings and scams out there - we're fixing that.</p>
+<div class="mission-section">
+<h2 data-i18n="whoWeAre">Who We Are</h2>
+<p data-i18n="whoWeAreText">A team of developers who got tired of seeing students fall for internship scams. We built this platform to verify opportunities, track fraud, and help students actually grow their skills.</p>
+</div>
+<div class="mission-section">
+<h2 data-i18n="theProblem">The Problem</h2>
+<p data-i18n="theProblemText">Students waste time on fake internships. Companies post unclear requirements. No one's monitoring what's real and what's not. Career paths feel confusing without proper guidance.</p>
+</div>
+<div class="mission-section">
+<h2 data-i18n="whatWeDo">What We Do</h2>
+<p data-i18n="whatWeDoText">We verify internships before they reach you. Each posting gets a trust score. Government bodies can monitor fraud patterns. Students get skill roadmaps based on what companies actually need. Simple as that.</p>
+</div>
+<div class="features-section">
+<h2 data-i18n="whatMakesUsDifferent">What Makes Us Different</h2>
+<div class="feature-list">
+<div class="feature-card">
+<div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+<h3 data-i18n="trustScoring">Trust Scoring</h3>
+<p data-i18n="trustScoringText">Every internship gets checked. Company history, reviews, red flags - we score it all so you know what's legit.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+<h3 data-i18n="skillRoadmaps">Skill Roadmaps</h3>
+<p data-i18n="skillRoadmapsText">We analyze what skills you have and what jobs need. Then build you a learning path that actually makes sense.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"><i class="fas fa-eye"></i></div>
+<h3 data-i18n="fraudMonitoring">Fraud Monitoring</h3>
+<p data-i18n="fraudMonitoringText">Government dashboards track scam patterns. Students can report suspicious postings. We keep the platform clean.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="help-section" id="services">
+<h1 data-i18n="servicesHeading">Services</h1>
+<p data-i18n="servicesText">Here's what we offer to keep your internship search safe and effective.</p>
+<div class="features-section">
+<div class="feature-list">
+<div class="feature-card">
+<div class="feature-icon"><img src="Images/verification.jpeg" alt="internship verification"></div>
+<h3 data-i18n="internshipVerification">Internship Verification</h3>
+<p data-i18n="internshipVerificationText">AI checks company details, past reviews, and scam signals. Shows trust rating - High, Medium, or Low.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"><img src="Images/fraud.jpg" alt="Fraud Detection"></div>
+<h3 data-i18n="scamDetection">Scam Detection</h3>
+<p data-i18n="scamDetectionText">Alerts for fraud patterns, duplicate postings, and suspicious payment requests. We flag it before you apply.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"><img src="Images/Gov.jpeg" alt="Government"></div>
+<h3 data-i18n="governmentDashboard">Government Dashboard</h3>
+<p data-i18n="governmentDashboardText">Real-time analytics for monitoring bodies. Track fraud complaints, verify companies, see regional scam data.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"><img src="Images/gap.jpeg" alt="Skill"></div>
+<h3 data-i18n="skillGapAnalysis">Skill Gap Analysis</h3>
+<p data-i18n="skillGapAnalysisText">Compare your skills with job requirements. See exactly what you're missing for your target role.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"><img src="Images/roadmap.jpeg" alt="Learning"></div>
+<h3 data-i18n="learningRoadmaps">Learning Roadmaps</h3>
+<p data-i18n="learningRoadmapsText">Personalized plans from beginner to advanced. Weekly goals, course recommendations, clear progression.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"><img src="Images/learning.jpeg" alt="Skill"></div>
+<h3 data-i18n="skillAssessments">Skill Assessments</h3>
+<p data-i18n="skillAssessmentsText">Take quizzes in your domain. Get scored, see where you stand, get improvement suggestions.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"><img src="Images/verified.jpeg" alt="Skill"></div>
+<h3 data-i18n="verifiedListings">Verified Listings</h3>
+<p data-i18n="verifiedListingsText">Only approved internships show up. Government and college-verified opportunities you can trust.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"><img src="Images/report.jpeg" alt="Skill"></div>
+<h3 data-i18n="reportSystem">Report System</h3>
+<p data-i18n="reportSystemText">Found something fishy? Report it. We track complaints and take action on fraudulent postings.</p>
+</div>
+</div>
+</div>
+<div class="contact-section">
+<h2 data-i18n="getInTouch">Get in Touch</h2>
+<p data-i18n="getInTouchText">Questions? Issues? Just want to talk? Drop us a message.</p>
+<a href="mailto:support@jobsy.com" class="btn primary" data-i18n="emailUs">Email Us</a>
+</div>
+</section>
+</main>
+<footer class="footer">
+<p data-i18n="footerText">© 2026 Jobsy — By Team TechTara.</p>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>

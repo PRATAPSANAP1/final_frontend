@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Skill Assessment Quiz - Jobsy</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="./config.js"></script>
+    <style>
+        body {
+            background: #dbeafe;
+            font-family: Arial, sans-serif
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3)
+        }
+
+        .quiz-header h1 {
+            margin: 0 0 10px;
+            font-size: 2rem
+        }
+
+        .quiz-header p {
+            margin: 0;
+            opacity: 0.9
+        }
+
+        .quiz-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px
+        }
+
+        .info-item {
+            text-align: center
+        }
+
+        .info-item .label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px
+        }
+
+        .info-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb
+        }
+
+        .question-section {
+            margin-bottom: 30px
+        }
+
+        .question-number {
+            color: #2563eb;
+            font-weight: 600;
+            margin-bottom: 10px
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            color: #1e40af;
+            margin-bottom: 20px;
+            font-weight: 500
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #93c5fd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fff
+        }
+
+        .option:hover {
+            background: #eff6ff;
+            border-color: #3b82f6
+        }
+
+        .option.selected {
+            background: #3b82f6;
+            color: #fff;
+            border-color: #3b82f6
+        }
+
+        .option input {
+            margin-right: 10px
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: #fff
+        }
+
+        .btn-primary:hover {
+            background: #2563eb
+        }
+
+        .btn-secondary {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd
+        }
+
+        .btn-secondary:hover {
+            background: #bfdbfe
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            transition: width 0.3s
+        }
+
+        .result-card {
+            text-align: center;
+            padding: 40px
+        }
+
+        .result-score {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin: 20px 0
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            color: #1e40af;
+            margin-bottom: 30px
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0
+        }
+
+        .result-item {
+            padding: 20px;
+            background: #eff6ff;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6
+        }
+
+        .result-item .label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px
+        }
+
+        .result-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .answer-review {
+            text-align: left
+        }
+
+        .review-question {
+            padding: 20px;
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #eff6ff
+        }
+
+        .review-question h3 {
+            color: #1e40af;
+            margin: 0 0 15px
+        }
+
+        .review-option {
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 2px solid transparent
+        }
+
+        .review-option.correct {
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #065f46
+        }
+
+        .review-option.wrong {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b
+        }
+
+        .review-option.user-answer {
+            font-weight: 600
+        }
+
+        @media(max-width:768px) {
+            .quiz-container {
+                padding: 10px
+            }
+
+            .quiz-header {
+                padding: 20px
+            }
+
+            .quiz-header h1 {
+                font-size: 1.5rem
+            }
+
+            .quiz-card {
+                padding: 20px
+            }
+
+            .quiz-navigation {
+                flex-direction: column;
+                gap: 10px
+            }
+
+            .btn {
+                width: 100%
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>JavaScript Fundamentals Quiz</h1>
+            <p>Test your knowledge and improve your skills</p>
+        </div>
+        <div id="quizStart" class="quiz-card">
+            <h2 style="color:#2563eb;margin-bottom:20px">Quiz Information</h2>
+            <div class="quiz-info">
+                <div class="info-item">
+                    <div class="label">Questions</div>
+                    <div class="value">10</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Duration</div>
+                    <div class="value">15 min</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Difficulty</div>
+                    <div class="value">Beginner</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Pass Score</div>
+                    <div class="value">70%</div>
+                </div>
+            </div>
+            <h3 style="color:#1e40af;margin:30px 0 15px">Instructions:</h3>
+            <ul style="color:#666;line-height:1.8">
+                <li>Read each question carefully before answering</li>
+                <li>You can navigate between questions using Previous/Next buttons</li>
+                <li>You can change your answers before submitting</li>
+                <li>Click "Submit Quiz" when you're done</li>
+                <li>Your score will be displayed immediately after submission</li>
+            </ul>
+            <button class="btn btn-primary" onclick="startQuiz()" style="margin-top:30px;width:100%">Start Quiz</button>
+            <a href="candidate.html"
+                style="display:block;text-align:center;margin-top:15px;color:#3b82f6;text-decoration:none">Back to
+                Dashboard</a>
+        </div>
+        <div id="quizQuestion" class="quiz-card hidden">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width:10%"></div>
+            </div>
+            <div class="question-section">
+                <div class="question-number" id="questionNumber">Question 1 of 10</div>
+                <div class="question-text" id="questionText">What is JavaScript?</div>
+                <div class="options" id="optionsContainer">
+                    <label class="option">
+                        <input type="radio" name="answer" value="A">
+                        A programming language for web development
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="answer" value="B">
+                        A markup language
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="answer" value="C">
+                        A database management system
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="answer" value="D">
+                        An operating system
+                    </label>
+                </div>
+            </div>
+            <div class="quiz-navigation">
+                <button class="btn btn-secondary" onclick="previousQuestion()" id="prevBtn">Previous</button>
+                <div style="color:#666;font-weight:600">Time Remaining: <span id="timer">15:00</span></div>
+                <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn">Next</button>
+            </div>
+        </div>
+        <div id="quizResult" class="quiz-card hidden">
+            <div class="result-card">
+                <h2 style="color:#2563eb;margin-bottom:20px">Quiz Completed!</h2>
+                <div class="result-score" id="finalScore">85%</div>
+                <div class="result-message" id="resultMessage">Excellent! You passed the quiz.</div>
+                <div class="result-details">
+                    <div class="result-item">
+                        <div class="label">Correct Answers</div>
+                        <div class="value" id="correctAnswers">8</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">Wrong Answers</div>
+                        <div class="value" id="wrongAnswers">2</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">Total Questions</div>
+                        <div class="value">10</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">Time Taken</div>
+                        <div class="value" id="timeTaken">12:30</div>
+                    </div>
+                </div>
+                <div style="margin-top:30px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                    <button class="btn btn-primary" onclick="retakeQuiz()">Retake Quiz</button>
+                    <button class="btn btn-secondary" onclick="viewAnswers()">View Answers</button>
+                    <a href="candidate.html" class="btn btn-secondary" style="text-decoration:none">Back to
+                        Dashboard</a>
+                </div>
+            </div>
+        </div>
+        <div id="answerReview" class="quiz-card hidden">
+            <h2 style="color:#2563eb;margin-bottom:20px">Answer Review</h2>
+            <div class="answer-review" id="reviewContainer"></div>
+            <div style="margin-top:30px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                <button class="btn btn-primary" onclick="backToResults()">Back to Results</button>
+                <button class="btn btn-secondary" onclick="retakeQuiz()">Retake Quiz</button>
+                <a href="candidate.html" class="btn btn-secondary" style="text-decoration:none">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        const questions = [
+            { q: "What is JavaScript?", options: ["A programming language for web development", "A markup language", "A database management system", "An operating system"], correct: 0 },
+            { q: "Which symbol is used for comments in JavaScript?", options: ["//", "/* */", "Both // and /* */", "#"], correct: 2 },
+            { q: "What is the correct way to declare a variable?", options: ["var x = 5", "variable x = 5", "v x = 5", "declare x = 5"], correct: 0 },
+            { q: "Which method is used to print in console?", options: ["console.log()", "print()", "echo()", "display()"], correct: 0 },
+            { q: "What does DOM stand for?", options: ["Document Object Model", "Data Object Model", "Digital Object Model", "Document Oriented Model"], correct: 0 },
+            { q: "Which operator is used for equality check?", options: ["=", "==", "===", "!="], correct: 2 },
+            { q: "What is the result of 2 + '2' in JavaScript?", options: ["4", "22", "Error", "NaN"], correct: 1 },
+            { q: "Which keyword is used to define a function?", options: ["function", "func", "def", "method"], correct: 0 },
+            { q: "What is an array in JavaScript?", options: ["A collection of elements", "A single value", "A function", "A loop"], correct: 0 },
+            { q: "Which method adds an element to the end of an array?", options: ["push()", "pop()", "shift()", "unshift()"], correct: 0 }
+        ];
+        let currentQuestion = 0;
+        let answers = [];
+        let startTime;
+        let timerInterval;
+        function startQuiz() {
+            document.getElementById('quizStart').classList.add('hidden');
+            document.getElementById('quizQuestion').classList.remove('hidden');
+            currentQuestion = 0;
+            answers = new Array(questions.length).fill(null);
+            startTime = Date.now();
+            startTimer();
+            loadQuestion();
+        }
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            document.getElementById('questionText').textContent = q.q;
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const label = document.createElement('label');
+                label.className = 'option';
+                if (answers[currentQuestion] === i) label.classList.add('selected');
+                label.innerHTML = `<input type="radio" name="answer" value="${i}" ${answers[currentQuestion] === i ? 'checked' : ''}>${opt}`;
+                label.onclick = () => selectAnswer(i);
+                container.appendChild(label);
+            });
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1 ? 'Submit Quiz' : 'Next';
+            updateProgress();
+        }
+        function selectAnswer(index) {
+            answers[currentQuestion] = index;
+            document.querySelectorAll('.option').forEach((opt, i) => {
+                opt.classList.toggle('selected', i === index);
+            });
+        }
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                submitQuiz();
+            }
+        }
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+        function startTimer() {
+            let timeLeft = 900;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const mins = Math.floor(timeLeft / 60);
+                const secs = timeLeft % 60;
+                document.getElementById('timer').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            let correct = 0;
+            answers.forEach((ans, i) => {
+                if (ans === questions[i].correct) correct++;
+            });
+            const score = Math.round((correct / questions.length) * 100);
+            const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(timeTaken / 60);
+            const secs = timeTaken % 60;
+            document.getElementById('quizQuestion').classList.add('hidden');
+            document.getElementById('quizResult').classList.remove('hidden');
+            document.getElementById('finalScore').textContent = score + '%';
+            document.getElementById('correctAnswers').textContent = correct;
+            document.getElementById('wrongAnswers').textContent = questions.length - correct;
+            document.getElementById('timeTaken').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+            if (score >= 70) {
+                document.getElementById('resultMessage').textContent = 'Excellent! You passed the quiz.';
+            } else {
+                document.getElementById('resultMessage').textContent = 'Keep practicing! You can retake the quiz.';
+            }
+            const email = localStorage.getItem('userEmail');
+            if (email) {
+                fetch('${backend_URL}/quiz/saveResult', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        candidateEmail: email,
+                        skill: 'JavaScript Fundamentals',
+                        score: score,
+                        totalQuestions: questions.length,
+                        correctAnswers: correct,
+                        timeTaken: timeTaken
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Quiz result saved to database');
+                    }
+                })
+                .catch(err => console.error('Error saving quiz result:', err));
+            }
+        }
+        function retakeQuiz() {
+            document.getElementById('quizResult').classList.add('hidden');
+            document.getElementById('answerReview').classList.add('hidden');
+            document.getElementById('quizStart').classList.remove('hidden');
+        }
+        function viewAnswers() {
+            document.getElementById('quizResult').classList.add('hidden');
+            document.getElementById('answerReview').classList.remove('hidden');
+            const container = document.getElementById('reviewContainer');
+            container.innerHTML = '';
+            questions.forEach((q, i) => {
+                const div = document.createElement('div');
+                div.className = 'review-question';
+                const userAnswer = answers[i];
+                const correctAnswer = q.correct;
+                let html = `<h3>Question ${i + 1}: ${q.q}</h3>`;
+                q.options.forEach((opt, j) => {
+                    let className = 'review-option';
+                    if (j === correctAnswer) className += ' correct';
+                    if (j === userAnswer && j !== correctAnswer) className += ' wrong';
+                    if (j === userAnswer) className += ' user-answer';
+                    let label = '';
+                    if (j === correctAnswer) label = ' ✓ Correct Answer';
+                    if (j === userAnswer && j !== correctAnswer) label = ' ✗ Your Answer';
+                    html += `<div class="${className}">${opt}${label}</div>`;
+                });
+                if (userAnswer === null) html += `<p style="color:#ef4444;margin-top:10px">You did not answer this question.</p>`;
+                div.innerHTML = html;
+                container.appendChild(div);
+            });
+        }
+        function backToResults() {
+            document.getElementById('answerReview').classList.add('hidden');
+            document.getElementById('quizResult').classList.remove('hidden');
+        }
+    </script>
+</body>
+
+</html>

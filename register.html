@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title data-i18n="registerHeading">Register</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="./config.js"></script>
+    <style>
+        .main {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            background: url('Images/Background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            position: relative
+        }
+
+        .main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(56, 73, 182, 0.6);
+            z-index: 0
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2)
+        }
+
+        .register-card {
+            max-width: 650px;
+            padding: 40px
+        }
+
+        .register-card h2 {
+            text-align: center;
+            color: #111;
+            margin: 0 0 30px;
+            font-size: 2em;
+            font-weight: 700
+        }
+
+        .register-card h3 {
+            color: #111;
+            margin: 20px 0 15px;
+            font-size: 1.2em;
+            font-weight: 600
+        }
+
+        .register-card form {
+            display: flex;
+            flex-direction: column
+        }
+
+        .register-card label {
+            display: flex;
+            flex-direction: column;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 25px
+        }
+
+        .register-card input,
+        .register-card select,
+        .register-card textarea {
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1em;
+            margin-top: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            background: #fff;
+            color: #333
+        }
+
+        .register-card input::placeholder,
+        .register-card textarea::placeholder {
+            color: #999
+        }
+
+        .register-card input:focus,
+        .register-card select:focus,
+        .register-card textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2)
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-align: center;
+            border: none
+        }
+
+        .btn.primary {
+            background: #6366f1;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+            width: 100%;
+            margin-top: 10px
+        }
+
+        .btn.primary:hover {
+            background: #4f46e5;
+            transform: translateY(-2px)
+        }
+
+        .btn.secondary {
+            background: #4CAF50;
+            color: #fff;
+            margin: 10px 0 20px;
+            width: auto
+        }
+
+        .btn.secondary:hover {
+            background: #45a049
+        }
+
+        .work-experience-item {
+            border: 1px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative
+        }
+
+        .work-experience-item .remove-work-experience {
+            background: #f44336;
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            float: right;
+            margin-bottom: 10px
+        }
+
+        .work-experience-item .remove-work-experience:hover {
+            background: #d32f2f
+        }
+
+        .form-switch {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: #666
+        }
+
+        .form-switch a {
+            color: #6366f1;
+            text-decoration: none
+        }
+
+        .form-switch a:hover {
+            text-decoration: underline
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .footer {
+            background: #004080;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 0.9em
+        }
+
+        @media(max-width:768px) {
+            .main {
+                padding: 20px 15px
+            }
+
+            .register-card {
+                width: 100%;
+                padding: 20px
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                margin-top: 10px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">Jobsy</a>
+            <div class="right-section">
+                <select id="language">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="mr">मराठी</option>
+                </select>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="card register-card">
+            <h2 data-i18n="registerHeading">Register</h2>
+            <form id="registerForm">
+                <label><span data-i18n="roleLabel">Role</span>
+                    <select id="roleSelect">
+                        <option value="candidate" data-i18n="candidate">Candidate</option>
+                        <option value="company" data-i18n="company">Company</option>
+                    </select>
+                </label>
+                <label><span data-i18n="nameLabel">Name</span>
+                    <input id="userName" placeholder="full name" required />
+                </label>
+                <label><span data-i18n="idLabel">Email or Mobile</span>
+                    <input id="userId" placeholder="email or mobile" required />
+                </label>
+                <div id="candidateFields">
+                    <h3 data-i18n="professionalDetails">Professional Details</h3>
+                    <label><span data-i18n="resumeUploadLabel">Upload Resume/CV (PDF only)</span>
+                        <input type="file" id="resumeUpload" accept=".pdf" />
+                    </label>
+                    <label><span data-i18n="portfolioUrlLabel">Portfolio/LinkedIn URL</span>
+                        <input type="url" id="portfolioUrl" />
+                    </label>
+                    <h3 data-i18n="educationalBackground">Educational Background</h3>
+                    <label><span data-i18n="educationLevelLabel">Education Level</span>
+                        <select id="educationLevel">
+                            <option value="" data-i18n="selectLevel">Select Level</option>
+                            <option value="10th" data-i18n="tenthPass">10th Pass</option>
+                            <option value="12th" data-i18n="twelfthPass">12th Pass</option>
+                            <option value="diploma" data-i18n="diploma">Diploma</option>
+                            <option value="graduate" data-i18n="graduate">Graduate</option>
+                            <option value="postgraduate" data-i18n="postgraduate">Postgraduate</option>
+                        </select>
+                    </label>
+                    <label><span data-i18n="universityLabel">University/College</span>
+                        <input type="text" id="university" />
+                    </label>
+                    <label><span data-i18n="majorLabel">Major/Field of Study</span>
+                        <input type="text" id="major" />
+                    </label>
+                    <label><span data-i18n="graduationYearLabel">Year of Graduation</span>
+                        <input type="number" id="graduationYear" min="1900" max="2100" />
+                    </label>
+                    <h3 data-i18n="skillsAndInterests">Skills and Interests</h3>
+                    <label><span data-i18n="skillsInputLabel">Your Skills (comma-separated)</span>
+                        <input type="text" id="skills" />
+                    </label>
+                    <h3 data-i18n="workExperienceLabel">Work Experience</h3>
+                    <div id="workExperienceContainer"></div>
+                    <button type="button" id="addWorkExperienceBtn" class="btn secondary" data-i18n="addExperience">Add
+                        New Experience</button>
+                    <br><br>
+                    <label><span data-i18n="locationPreferenceLabel">Location Preference</span>
+                        <input type="text" id="locationPreference" />
+                    </label>
+                </div>
+                <div id="companyFields" class="hidden">
+                    <h3 data-i18n="companyDetails">Company Details</h3>
+                    <label><span data-i18n="companyNameLabel">Company Name</span>
+                        <input type="text" id="companyName" />
+                    </label>
+                    <label><span data-i18n="companySizeLabel">Company Size</span>
+                        <select id="companySize">
+                            <option value="" data-i18n="selectSize">Select Size</option>
+                            <option value="1-10" data-i18n="size1">1-10 employees</option>
+                            <option value="11-50" data-i18n="size2">11-50 employees</option>
+                            <option value="51-200" data-i18n="size3">51-200 employees</option>
+                            <option value="201-1000" data-i18n="size4">201-1000 employees</option>
+                            <option value="1000+" data-i18n="size5">1000+ employees</option>
+                        </select>
+                    </label>
+                    <label><span data-i18n="industryLabel">Industry</span>
+                        <input type="text" id="industry" />
+                    </label>
+                    <label><span data-i18n="websiteUrlLabel">Website URL</span>
+                        <input type="url" id="websiteUrl" />
+                    </label>
+                    <label><span data-i18n="contactPersonLabel">Contact Person</span>
+                        <input type="text" id="contactPerson" />
+                    </label>
+                </div>
+                <label><span data-i18n="passwordLabel">Password</span>
+                    <input id="password" type="password" required />
+                </label>
+                <label><span data-i18n="confirmPasswordLabel">Confirm Password</span>
+                    <input id="confirmPassword" type="password" required />
+                </label>
+                <button type="submit" class="btn primary">Register</button>
+            </form>
+            <div class="form-switch">
+                <p><span data-i18n="haveAccountText">Already have an account?</span>
+                    <a href="login.html" data-i18n="loginLink">Login here</a>
+                </p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <p data-i18n="footerText">© 2026 Jobsy — By Team TechTara.</p>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const roleSelect = document.getElementById("roleSelect");
+            const candidateFields = document.getElementById("candidateFields");
+            const companyFields = document.getElementById("companyFields");
+            const registerForm = document.getElementById("registerForm");
+            const resumeUpload = document.getElementById("resumeUpload");
+
+            resumeUpload.addEventListener("change", async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    try {
+                        const typedArray = new Uint8Array(event.target.result);
+                        const pdf = await pdfjsLib.getDocument(typedArray).promise;
+                        let text = "";
+                        for (let i = 1; i <= pdf.numPages; i++) {
+                            const page = await pdf.getPage(i);
+                            const content = await page.getTextContent();
+                            text += content.items.map(item => item.str).join(" ") + " ";
+                        }
+                        autoFillForm(text);
+                    } catch (error) {
+                        console.error("Error parsing PDF:", error);
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            });
+
+            function autoFillForm(text) {
+                const emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+                if (emailMatch && !document.getElementById("userId").value) {
+                    document.getElementById("userId").value = emailMatch[0];
+                }
+                const nameMatch = text.match(/^([A-Z][a-z]+\s[A-Z][a-z]+)/);
+                if (nameMatch && !document.getElementById("userName").value) {
+                    document.getElementById("userName").value = nameMatch[0];
+                }
+                const linkedinMatch = text.match(/(https?:\/\/)?(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+/i);
+                if (linkedinMatch && !document.getElementById("portfolioUrl").value) {
+                    document.getElementById("portfolioUrl").value = linkedinMatch[0];
+                }
+                const skills = [];
+                const skillKeywords = ["JavaScript", "Python", "Java", "React", "Node.js", "HTML", "CSS", "SQL", "MongoDB", "AWS", "Docker", "Git", "TypeScript", "Angular", "Vue"];
+                skillKeywords.forEach(skill => {
+                    if (text.includes(skill)) skills.push(skill);
+                });
+                if (skills.length > 0 && !document.getElementById("skills").value) {
+                    document.getElementById("skills").value = skills.join(", ");
+                }
+                const eduMatch = text.match(/(Bachelor|Master|B\.Tech|M\.Tech|BCA|MCA|B\.Sc|M\.Sc)/i);
+                if (eduMatch && !document.getElementById("educationLevel").value) {
+                    const edu = eduMatch[0].toLowerCase();
+                    if (edu.includes("master") || edu.includes("m.")) {
+                        document.getElementById("educationLevel").value = "postgraduate";
+                    } else {
+                        document.getElementById("educationLevel").value = "graduate";
+                    }
+                }
+                const collegeMatch = text.match(/(University|College|Institute)[^\n]{0,50}/i);
+                if (collegeMatch && !document.getElementById("university").value) {
+                    document.getElementById("university").value = collegeMatch[0].trim();
+                }
+                const yearMatch = text.match(/\b(19|20)\d{2}\b/);
+                if (yearMatch && !document.getElementById("graduationYear").value) {
+                    document.getElementById("graduationYear").value = yearMatch[0];
+                }
+            }
+
+            function toggleFields() {
+                if (roleSelect.value === "candidate") {
+                    candidateFields.style.display = "block";
+                    companyFields.style.display = "none";
+                } else {
+                    candidateFields.style.display = "none";
+                    companyFields.style.display = "block";
+                }
+            }
+            toggleFields();
+            roleSelect.addEventListener("change", toggleFields);
+            const addWorkExperienceBtn = document.getElementById("addWorkExperienceBtn");
+            const workExperienceContainer = document.getElementById("workExperienceContainer");
+            function createWorkExperienceField() {
+                const newEntry = document.createElement("div");
+                newEntry.classList.add("work-experience-item");
+                newEntry.innerHTML = `<label><span>Job Title</span><input type="text"/></label><label><span>Company Name</span><input type="text"/></label><label><span>Duration</span><input type="text"/></label><label><span>Responsibilities</span><textarea rows="4"></textarea></label><button type="button" class="remove-work-experience">Cancel</button>`;
+                workExperienceContainer.appendChild(newEntry);
+            }
+            addWorkExperienceBtn.addEventListener("click", createWorkExperienceField);
+            workExperienceContainer.addEventListener("click", (e) => {
+                if (e.target.classList.contains("remove-work-experience")) {
+                    e.target.closest(".work-experience-item").remove();
+                }
+            });
+            registerForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const password = document.getElementById("password").value;
+                const confirmPassword = document.getElementById("confirmPassword").value;
+                if (password !== confirmPassword) {
+                    showWarning("Passwords do not match!");
+                    return;
+                }
+                const role = roleSelect.value;
+                const formData = new FormData();
+                if (role === "candidate") {
+                    formData.append("Name", document.getElementById("userName").value);
+                    formData.append("Email", document.getElementById("userId").value);
+                    formData.append("Password", password);
+                    formData.append("ConPassword", confirmPassword);
+                    formData.append("Portfolio", document.getElementById("portfolioUrl").value);
+                    formData.append("Education", document.getElementById("educationLevel").value);
+                    formData.append("College", document.getElementById("university").value);
+                    formData.append("Major", document.getElementById("major").value);
+                    formData.append("Year", document.getElementById("graduationYear").value);
+                    formData.append("Skills", document.getElementById("skills").value);
+                    formData.append("Location", document.getElementById("locationPreference").value);
+                    const resumeFile = document.getElementById("resumeUpload").files[0];
+                    if (resumeFile) formData.append("Resume", resumeFile);
+                    try {
+                        const res = await fetch(`${backend_URL}/api/signup`, {
+                            method: "POST",
+                            body: formData
+                        });
+                        const text = await res.text();
+                        if (res.ok) {
+                            showSuccess("Registration successful! Redirecting...");
+                            setTimeout(() => {
+                                window.location.href = "candidate.html";
+                            }, 1500);
+                        } else {
+                            showError("Registration failed: " + text);
+                        }
+                    } catch (err) {
+                        showError("Error: " + err.message);
+                    }
+                } else {
+                    const data = {
+                        CompanyName: document.getElementById("companyName").value.trim(),
+                        CompanySize: document.getElementById("companySize").value,
+                        Industry: document.getElementById("industry").value.trim(),
+                        Website: document.getElementById("websiteUrl").value.trim(),
+                        ContactPerson: document.getElementById("contactPerson").value.trim(),
+                        Email: document.getElementById("userId").value.trim(),
+                        Password: password,
+                        ConPassword: confirmPassword
+                    };
+
+                    // Basic validation
+                    if (!data.CompanyName || !data.Email || !data.Password) {
+                        showWarning("Please fill all required company fields");
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch(`${backend_URL}/api/signup/company`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            credentials: "include", // important for cookie
+                            body: JSON.stringify(data)
+                        });
+
+                        const text = await res.text();
+
+                        if (res.ok) {
+                            showSuccess("Company registered successfully! Redirecting...");
+                            setTimeout(() => {
+                                window.location.href = "company.html";
+                            }, 1500);
+                        } else {
+                            showError("Registration failed: " + text);
+                        }
+                    } catch (err) {
+                        showError("Server error: " + err.message);
+                    }
+                }
+
+            });
+        });
+
+        function submitForm() {
+
+        }
+    </script>
+</body>
+
+</html>
