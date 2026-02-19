@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded',()=>{
+    const FRONTEND_URL = "https://jobsyhwm.vercel.app";
+const BACKEND_URL = "https://final-year-project-rk87.onrender.com";
+
 const lang=localStorage.getItem('appLang')||'en';
 if(typeof translations!=='undefined'&&translations[lang]){
 window.t=translations[lang];
@@ -7,7 +10,7 @@ loadCompanyProfile();
 loadCompanyProfileForm();
 });
 function loadCompanyProfile(){
-fetch('/api/getUser',{credentials:'include'})
+fetch(`${BACKEND_URL}/api/getUser`,{credentials:'include'})
 .then(res=>res.json())
 .then(data=>{
 const companyName=data.CompanyName||'Company';
@@ -22,7 +25,7 @@ loadStats(companyName);
 .catch(err=>console.error('Error loading profile:',err));
 }
 function loadCompanyApplications(companyName){
-fetch(`/application/company?companyName=${encodeURIComponent(companyName)}`)
+fetch(`${BACKEND_URL}/application/company?companyName=${encodeURIComponent(companyName)}`)
 .then(res=>res.json())
 .then(apps=>{
 const recentContainer=document.querySelector('#dashboard .section:nth-of-type(2)');
@@ -82,7 +85,7 @@ allContainer.insertAdjacentHTML('beforeend',item);
 .catch(err=>console.error('Error loading applications:',err));
 }
 function loadCompanyInternships(companyName){
-fetch(`/getData/getCompanyInternships?companyName=${encodeURIComponent(companyName)}`)
+fetch(`${BACKEND_URL}/getData/getCompanyInternships?companyName=${encodeURIComponent(companyName)}`)
 .then(res=>res.json())
 .then(internships=>{
 const activeContainer=document.getElementById('activePostingsContainer');
@@ -93,7 +96,7 @@ activeContainer.innerHTML='<p style="text-align:center;color:#666;">No active po
 }else{
 activeContainer.innerHTML='';
 internships.forEach(int=>{
-fetch(`/application/company?companyName=${encodeURIComponent(companyName)}`)
+fetch(`${BACKEND_URL}/application/company?companyName=${encodeURIComponent(companyName)}`)
 .then(res=>res.json())
 .then(apps=>{
 const appCount=apps.filter(a=>a.internshipTitle===int.internshipTitle).length;
@@ -119,7 +122,7 @@ allContainer.innerHTML='<p style="text-align:center;color:#666;">No postings yet
 }else{
 allContainer.innerHTML='';
 internships.forEach(int=>{
-fetch(`/application/company?companyName=${encodeURIComponent(companyName)}`)
+fetch(`${BACKEND_URL}/application/company?companyName=${encodeURIComponent(companyName)}`)
 .then(res=>res.json())
 .then(apps=>{
 const appCount=apps.filter(a=>a.internshipTitle===int.internshipTitle).length;
@@ -146,8 +149,8 @@ allContainer.insertAdjacentHTML('beforeend',card);
 }
 function loadStats(companyName){
 Promise.all([
-fetch(`/getData/getCompanyInternships?companyName=${encodeURIComponent(companyName)}`).then(r=>r.json()),
-fetch(`/application/company?companyName=${encodeURIComponent(companyName)}`).then(r=>r.json())
+fetch(`${BACKEND_URL}/getData/getCompanyInternships?companyName=${encodeURIComponent(companyName)}`).then(r=>r.json()),
+fetch(`${BACKEND_URL}/application/company?companyName=${encodeURIComponent(companyName)}`).then(r=>r.json())
 ])
 .then(([internships,apps])=>{
 const shortlisted=apps.filter(a=>a.status==='Shortlisted').length;
@@ -160,7 +163,7 @@ loadShortlistedCandidates(apps.filter(a=>a.status==='Shortlisted'));
 .catch(err=>console.error('Error loading stats:',err));
 }
 function loadCompanyProfileForm(){
-fetch('/api/getUser',{credentials:'include'})
+fetch(`${BACKEND_URL}/api/getUser`,{credentials:'include'})
 .then(res=>res.json())
 .then(data=>{
 const inputs=document.querySelectorAll('#profile input');
@@ -177,8 +180,8 @@ if(inputs[4])inputs[4].value=data.Website||'';
 function viewCandidateProfile(email){
 const t=window.t||{};
 Promise.all([
-fetch(`/api/getCandidateByEmail?email=${encodeURIComponent(email)}`).then(r=>r.json()),
-fetch(`/quiz/getResults?email=${encodeURIComponent(email)}`).then(r=>r.json())
+fetch(`${BACKEND_URL}/api/getCandidateByEmail?email=${encodeURIComponent(email)}`).then(r=>r.json()),
+fetch(`${BACKEND_URL}/quiz/getResults?email=${encodeURIComponent(email)}`).then(r=>r.json())
 ])
 .then(([candidate,quizData])=>{
 const quizResults=quizData.success?quizData.results:[];
@@ -235,10 +238,10 @@ showError('Error loading candidate profile');
 }
 function shortlistCandidate(email,internshipTitle){
 const t=window.t||{};
-fetch('/api/getUser',{credentials:'include'})
+fetch(`${BACKEND_URL}/api/getUser`,{credentials:'include'})
 .then(res=>res.json())
 .then(user=>{
-return fetch(`/application/company?companyName=${encodeURIComponent(user.CompanyName)}`);
+return fetch(`${BACKEND_URL}/application/company?companyName=${encodeURIComponent(user.CompanyName)}`);
 })
 .then(res=>res.json())
 .then(apps=>{
@@ -258,7 +261,7 @@ return;
 }
 }
 if(confirm(`Shortlist this candidate for ${internshipTitle}?`)){
-fetch('/application/updateStatus',{
+fetch(`${BACKEND_URL}/application/updateStatus`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({candidateEmail:email,internshipTitle,status:'Shortlisted'})
@@ -284,10 +287,10 @@ showError('Failed to check application status');
 });
 }
 function rejectCandidate(email,internshipTitle){
-fetch('/api/getUser',{credentials:'include'})
+fetch(`${BACKEND_URL}/api/getUser`,{credentials:'include'})
 .then(res=>res.json())
 .then(user=>{
-return fetch(`/application/company?companyName=${encodeURIComponent(user.CompanyName)}`);
+return fetch(`${BACKEND_URL}/application/company?companyName=${encodeURIComponent(user.CompanyName)}`);
 })
 .then(res=>res.json())
 .then(apps=>{
@@ -307,7 +310,7 @@ return;
 }
 }
 if(confirm(`Reject this candidate for ${internshipTitle}?`)){
-fetch('/application/updateStatus',{
+fetch(`${BACKEND_URL}/application/updateStatus`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({candidateEmail:email,internshipTitle,status:'Rejected'})
@@ -333,10 +336,10 @@ showError('Failed to check application status');
 });
 }
 function viewInternshipApplications(internshipTitle){
-fetch('/api/getUser',{credentials:'include'})
+fetch(`${BACKEND_URL}/api/getUser`,{credentials:'include'})
 .then(res=>res.json())
 .then(user=>{
-return fetch(`/application/company?companyName=${encodeURIComponent(user.CompanyName)}`);
+return fetch(`${BACKEND_URL}/application/company?companyName=${encodeURIComponent(user.CompanyName)}`);
 })
 .then(res=>res.json())
 .then(apps=>{
@@ -378,10 +381,10 @@ showError('Failed to load applications');
 });
 }
 function editInternship(internshipTitle){
-fetch('/api/getUser',{credentials:'include'})
+fetch(`${BACKEND_URL}/api/getUser`,{credentials:'include'})
 .then(res=>res.json())
 .then(user=>{
-return fetch(`/getData/getCompanyInternships?companyName=${encodeURIComponent(user.CompanyName)}`);
+return fetch(`${BACKEND_URL}/getData/getCompanyInternships?companyName=${encodeURIComponent(user.CompanyName)}`);
 })
 .then(res=>res.json())
 .then(internships=>{
@@ -433,7 +436,7 @@ stipend:document.getElementById('editStipend').value,
 skills:document.getElementById('editSkills').value.split(',').map(s=>s.trim()),
 description:document.getElementById('editDescription').value
 };
-fetch('/getData/updateInternship',{
+fetch(`${BACKEND_URL}/getData/updateInternship`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({internshipTitle:oldTitle,companyName,updates})
@@ -454,10 +457,10 @@ showError('Failed to update internship');
 });
 }
 function closeInternship(internshipTitle){
-fetch('/api/getUser',{credentials:'include'})
+fetch(`${BACKEND_URL}/api/getUser`,{credentials:'include'})
 .then(res=>res.json())
 .then(user=>{
-return fetch(`/getData/getCompanyInternships?companyName=${encodeURIComponent(user.CompanyName)}`);
+return fetch(`${BACKEND_URL}/getData/getCompanyInternships?companyName=${encodeURIComponent(user.CompanyName)}`);
 })
 .then(res=>res.json())
 .then(internships=>{
@@ -470,7 +473,7 @@ const currentStatus=int.status||'Active';
 const newStatus=currentStatus==='Active'?'Inactive':'Active';
 const action=newStatus==='Inactive'?'deactivate':'activate';
 if(confirm(`${action.charAt(0).toUpperCase()+action.slice(1)} "${internshipTitle}"?\n\nThis will ${newStatus==='Inactive'?'stop accepting new applications':'reopen the internship for applications'}.`)){
-fetch('/getData/updateInternshipStatus',{
+fetch(`${BACKEND_URL}/getData/updateInternshipStatus`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({internshipTitle,companyName:int.companyName,status:newStatus})
@@ -573,11 +576,11 @@ showWarning('Please provide meeting link for virtual interview');
 return;
 }
 const interviewDate=new Date(date+' '+time).toLocaleString();
-fetch('/api/getUser',{credentials:'include'})
+fetch(`${BACKEND_URL}/api/getUser`,{credentials:'include'})
 .then(res=>res.json())
 .then(company=>{
 const message=`Interview scheduled for ${internshipTitle} at ${company.CompanyName} on ${interviewDate}. Mode: ${mode}${mode==='Virtual'?' - '+link:''}${notes?' - '+notes:''}`;
-return fetch('/notification/create',{
+return fetch(`${BACKEND_URL}/notification/create`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({
@@ -605,12 +608,12 @@ showError('Failed to schedule interview');
 });
 }
 function loadAnalytics(){
-fetch('/api/getUser',{credentials:'include'})
+fetch(`${BACKEND_URL}/api/getUser`,{credentials:'include'})
 .then(res=>res.json())
 .then(user=>{
 return Promise.all([
-fetch(`/getData/getCompanyInternships?companyName=${encodeURIComponent(user.CompanyName)}`).then(r=>r.json()),
-fetch(`/application/company?companyName=${encodeURIComponent(user.CompanyName)}`).then(r=>r.json())
+fetch(`${BACKEND_URL}/getData/getCompanyInternships?companyName=${encodeURIComponent(user.CompanyName)}`).then(r=>r.json()),
+fetch(`${BACKEND_URL}/application/company?companyName=${encodeURIComponent(user.CompanyName)}`).then(r=>r.json())
 ]);
 })
 .then(([internships,apps])=>{
