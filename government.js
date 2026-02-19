@@ -1,6 +1,9 @@
+const FRONTEND_URL = "https://jobsyhwm.vercel.app";
+const BACKEND_URL = "https://final-year-project-rk87.onrender.com";
+
 async function loadStats() {
     try {
-        const response = await fetch('http://localhost:3400/getData/getGovStats', {
+        const response = await fetch(`${BACKEND_URL}/getData/getGovStats`, {
             credentials: 'include'
         });
         const data = await response.json();
@@ -18,7 +21,7 @@ async function loadStats() {
 
 async function loadRecentFraudReports() {
     try {
-        const response = await fetch('http://localhost:3400/getData/getRecentFraudReports', {
+        const response = await fetch(`${BACKEND_URL}/getData/getRecentFraudReports`, {
             credentials: 'include'
         });
         const data = await response.json();
@@ -50,7 +53,7 @@ async function loadRecentFraudReports() {
 async function takeActionOnInternship(company,internshipTitle,issue){
 if(!confirm(`Take action against ${company} for ${issue}?\n\nThis will deactivate the internship: ${internshipTitle}`))return;
 try{
-const response=await fetch('http://localhost:3400/getData/updateInternshipStatus',{
+const response=await fetch(`${BACKEND_URL}/getData/updateInternshipStatus`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({internshipTitle,companyName:company,status:'Inactive'}),
@@ -58,13 +61,13 @@ credentials:'include'
 });
 const data=await response.json();
 if(data.success){
-await fetch('http://localhost:3400/getData/updateFraudReportStatus',{
+await fetch(`${BACKEND_URL}/getData/updateFraudReportStatus`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({companyName:company,internshipTitle,status:'Resolved'}),
 credentials:'include'
 });
-await fetch('http://localhost:3400/getData/createAction',{
+await fetch(`${BACKEND_URL}/getData/createAction`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({
@@ -90,7 +93,7 @@ showError('Failed to take action');
 
 async function loadPendingCompanies() {
     try {
-        const response = await fetch('http://localhost:3400/getData/getPendingCompanies', {
+        const response = await fetch(`${BACKEND_URL}/getData/getPendingCompanies`, {
             credentials: 'include'
         });
         const data = await response.json();
@@ -115,7 +118,7 @@ async function loadPendingCompanies() {
 
 async function loadAllFraudReports() {
     try {
-        const response = await fetch('http://localhost:3400/getData/getAllFraudReports', {
+        const response = await fetch(`${BACKEND_URL}/getData/getAllFraudReports`, {
             credentials: 'include'
         });
         const data = await response.json();
@@ -168,7 +171,7 @@ function filterFraudReports() {
 
 async function loadAllCompanies() {
     try {
-        const response = await fetch('http://localhost:3400/getData/getAllCompanies', {
+        const response = await fetch(`${BACKEND_URL}/getData/getAllCompanies`, {
             credentials: 'include'
         });
         const data = await response.json();
@@ -212,7 +215,7 @@ function closeCompanyModal() {
 
 async function loadVerificationQueue() {
     try {
-        const response = await fetch('http://localhost:3400/getData/getPendingCompanies', {
+        const response = await fetch(`${BACKEND_URL}/getData/getPendingCompanies`, {
             credentials: 'include'
         });
         const data = await response.json();
@@ -241,7 +244,7 @@ async function loadVerificationQueue() {
 
 async function loadAnalytics() {
     try {
-        const response = await fetch('http://localhost:3400/getData/getAnalytics', {
+        const response = await fetch(`${BACKEND_URL}/getData/getAnalytics`, {
             credentials: 'include'
         });
         const data = await response.json();
@@ -256,7 +259,7 @@ async function loadAnalytics() {
 
 async function loadRegionalData() {
     try {
-        const response = await fetch('http://localhost:3400/getData/getRegionalData', {
+        const response = await fetch(`${BACKEND_URL}/getData/getRegionalData`, {
             credentials: 'include'
         });
         const data = await response.json();
@@ -289,7 +292,7 @@ async function loadRegionalData() {
 
 async function loadActionsTaken() {
     try {
-        const response = await fetch('http://localhost:3400/getData/getActionsTaken', {
+        const response = await fetch(`${BACKEND_URL}/getData/getActionsTaken`, {
             credentials: 'include'
         });
         const data = await response.json();
@@ -318,7 +321,7 @@ async function loadActionsTaken() {
 async function approveCompanyAction(email) {
     if (!confirm('Approve this company?')) return;
     try {
-        const response = await fetch('http://localhost:3400/getData/approveCompany', {
+        const response = await fetch(`${BACKEND_URL}/getData/approveCompany`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email }),
@@ -338,7 +341,7 @@ async function approveCompanyAction(email) {
 async function rejectCompanyAction(email) {
     if (!confirm('Reject this company?')) return;
     try {
-        const response = await fetch('http://localhost:3400/getData/rejectCompany', {
+        const response = await fetch(`${BACKEND_URL}/getData/rejectCompany`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email }),
