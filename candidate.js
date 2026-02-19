@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
+    const FRONTEND_URL = "https://jobsyhwm.vercel.app";
+const BACKEND_URL = "https://final-year-project-rk87.onrender.com";
+
 
     if (menuToggle) {
         menuToggle.addEventListener('click', () => {
@@ -28,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadProfile() {
-        fetch(`/api/getUser`)
+        fetch(`${BACKEND_URL}/api/getUser`)
             .then(res => res.json())
             .then(data => {
                 console.log("userProfile:", data);
@@ -63,14 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function logout() {
-    fetch(`/api/logout`)
+    fetch(`${BACKEND_URL}/api/logout`)
         .then(() => {
             window.location.href = "index.html";
         });
 }
 
 function loadInternships(email) {
-    fetch(`/bert/matchInternships`, {
+    fetch(`${BACKEND_URL}/bert/matchInternships`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email })
@@ -116,7 +119,7 @@ function loadInternships(email) {
             rec.insertAdjacentHTML("beforeend", cardHtml);
 
             // 2. Fetch the keywords and update the specific placeholder
-            fetch('/ats/analyze', {
+            fetch(`${BACKEND_URL}/ats/analyze`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, jobDescription: jobDesc })
@@ -152,7 +155,7 @@ function loadAllInternships() {
 
     container.innerHTML = "<p style='text-align:center;'>Scanning for internships...</p>";
 
-    fetch(`/getData/getInternships`)
+    fetch(`${BACKEND_URL}/getData/getInternships`)
         .then(res => res.json())
         .then(data => {
             ALL_INTERNSHIPS = data;
@@ -226,7 +229,7 @@ function showInternshipDetails(id) {
 }
 
 function checkKeywords(email, jobDesc, id) {
-    fetch('/ats/analyze', {
+    fetch(`${BACKEND_URL}/ats/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, jobDescription: jobDesc })
@@ -245,10 +248,10 @@ function checkKeywords(email, jobDesc, id) {
 }
 
 function checkFraudForInternship(job, id) {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(() => {
-            return fetch('/getData/getCompany', {
+            return fetch(`${BACKEND_URL}/getData/getCompany`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ companyName: job.companyName })
@@ -256,7 +259,7 @@ function checkFraudForInternship(job, id) {
         })
         .then(res => res.json())
         .then(company => {
-            return fetch(`/api/fraud/check`, {
+            return fetch(`${BACKEND_URL}/api/fraud/check`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -379,10 +382,10 @@ function applyNow(jobTitle, company) {
     }
     
     if (confirm(`Do you want to apply for ${jobTitle} at ${company}?`)) {
-        fetch('/api/getUser')
+        fetch(`${BACKEND_URL}/api/getUser`)
             .then(res => res.json())
             .then(user => {
-                return fetch('/application/apply', {
+                return fetch(`${BACKEND_URL}/application/apply`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -433,10 +436,10 @@ function saveJob(jobTitle, company) {
         }
     }
     
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch('/application/saveInternship', {
+            return fetch(`${BACKEND_URL}/application/saveInternship`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -476,10 +479,10 @@ function viewDetails(jobTitle, company) {
 
 function removeFromSaved(jobTitle, company) {
     if (confirm(`Remove ${jobTitle} at ${company} from saved internships?`)) {
-        fetch('/api/getUser')
+        fetch(`${BACKEND_URL}/api/getUser`)
             .then(res => res.json())
             .then(user => {
-                return fetch('/application/removeSaved', {
+                return fetch(`${BACKEND_URL}/application/removeSaved`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -508,7 +511,7 @@ function removeFromSaved(jobTitle, company) {
 function updateCandidateProfile(){
 const inputs=document.querySelectorAll('#profile input');
 const select=document.querySelector('#profile select');
-fetch('/api/updateProfile',{
+fetch(`${BACKEND_URL}/api/updateProfile`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({
@@ -544,7 +547,7 @@ if(inputs[3])inputs[3].value=data.Skills||'';
 if(inputs[5])inputs[5].value=data.Portfolio||'';
 }
 function loadApplications(email) {
-    fetch(`/application/candidate?email=${encodeURIComponent(email)}`)
+    fetch(`${BACKEND_URL}/application/candidate?email=${encodeURIComponent(email)}`)
         .then(res => res.json())
         .then(apps => {
             const recentContainer = document.getElementById('recentApplicationsContainer');
@@ -589,10 +592,10 @@ function loadApplications(email) {
         .catch(err => console.error('Error loading applications:', err));
 }
 function loadApplicationCount() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch(`/application/candidate?email=${encodeURIComponent(user.Email)}`);
+            return fetch(`${BACKEND_URL}/application/candidate?email=${encodeURIComponent(user.Email)}`);
         })
         .then(res => res.json())
         .then(apps => {
@@ -604,10 +607,10 @@ function loadApplicationCount() {
         .catch(err => console.error('Error loading count:', err));
 }
 function updateSavedCount() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch(`/application/savedInternships?email=${encodeURIComponent(user.Email)}`);
+            return fetch(`${BACKEND_URL}/application/savedInternships?email=${encodeURIComponent(user.Email)}`);
         })
         .then(res => res.json())
         .then(saved => {
@@ -619,10 +622,10 @@ function updateSavedCount() {
         .catch(err => console.error('Error loading saved count:', err));
 }
 function loadSavedInternships() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch(`/application/savedInternships?email=${encodeURIComponent(user.Email)}`);
+            return fetch(`${BACKEND_URL}/application/savedInternships?email=${encodeURIComponent(user.Email)}`);
         })
         .then(res => res.json())
         .then(saved => {
@@ -661,10 +664,10 @@ function submitFraudReport() {
         showWarning('Please fill in all required fields');
         return;
     }
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch('/getData/submitFraudReport', {
+            return fetch(`${BACKEND_URL}/getData/submitFraudReport`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -694,7 +697,7 @@ function submitFraudReport() {
         });
 }
 function loadCurrentSkills() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
             const container = document.getElementById('currentSkillsContainer');
@@ -724,7 +727,7 @@ function analyzeSkillGap() {
         'Data Analyst': ['Python', 'SQL', 'Excel', 'Tableau', 'Power BI', 'Statistics', 'Data Visualization'],
         'UI/UX Designer': ['Figma', 'Adobe XD', 'Sketch', 'Wireframing', 'Prototyping', 'User Research', 'HTML', 'CSS']
     };
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
             const userSkills = user.Skills ? user.Skills.split(',').map(s => s.trim().toLowerCase()).filter(s => s) : [];
@@ -860,7 +863,7 @@ function generateRoadmap() {
             concepts: ['Vector Editing', 'Symbols & Overrides', 'Artboards', 'Plugins Ecosystem', 'Prototyping', 'Design Systems', 'Export & Handoff']
         }
     };
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
             const roleSkills = {
@@ -902,15 +905,15 @@ function generateRoadmap() {
         .catch(err => console.error('Error generating roadmap:', err));
 }
 function loadMyFraudReports() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch('/getData/getAllFraudReports');
+            return fetch(`${BACKEND_URL}/getData/getAllFraudReports`);
         })
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                return fetch('/api/getUser').then(res => res.json()).then(user => {
+                return fetch(`${BACKEND_URL}/api/getUser`).then(res => res.json()).then(user => {
                     const myReports = data.reports.filter(r => r.reportedBy === user.Email);
                     const container = document.getElementById('myFraudReports');
                     if (!container) return;
@@ -971,7 +974,7 @@ function loadAllQuizzes() {
     displayQuizzes(allQuizzes);
 }
 function showMySkillsQuizzes() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
             const userSkills = user.Skills ? user.Skills.split(',').map(s => s.trim().toLowerCase()) : [];
@@ -998,7 +1001,7 @@ function filterQuizzes() {
     }
 }
 function displayQuizzes(quizzes) {
-    fetch('/quiz/getResults?email=' + encodeURIComponent(localStorage.getItem('userEmail') || ''))
+    fetch(`${BACKEND_URL}/quiz/getResults?email=` + encodeURIComponent(localStorage.getItem('userEmail') || ''))
         .then(res => res.json())
         .then(data => {
             const userResults = data.success ? data.results : [];
@@ -1042,7 +1045,7 @@ function displayQuizzes(quizzes) {
 function loadNotifications(email){
 if(!email)return;
 console.log('Loading notifications for:',email);
-fetch(`/notification/getNotifications?email=${encodeURIComponent(email)}`)
+fetch(`${BACKEND_URL}/notification/getNotifications?email=${encodeURIComponent(email)}`)
 .then(res=>res.json())
 .then(data=>{
 console.log('Notifications response:',data);
@@ -1081,7 +1084,7 @@ container.insertAdjacentHTML('beforeend',card);
 .catch(err=>console.error('Error loading notifications:',err));
 }
 function markNotificationRead(id){
-fetch('/notification/markAsRead',{
+fetch(`${BACKEND_URL}/notification/markAsRead`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({id})
@@ -1097,10 +1100,10 @@ loadNotifications(localStorage.getItem('userEmail'));
 function loadAnalytics(){
 console.log('Loading analytics...');
 Promise.all([
-fetch('/api/getUser').then(r=>r.json()),
-fetch(`/application/candidate?email=${localStorage.getItem('userEmail')}`).then(r=>r.json()),
-fetch(`/application/savedInternships?email=${localStorage.getItem('userEmail')}`).then(r=>r.json()),
-fetch(`/quiz/getResults?email=${localStorage.getItem('userEmail')}`).then(r=>r.json())
+fetch(`${BACKEND_URL}/api/getUser`).then(r=>r.json()),
+fetch(`${BACKEND_URL}/application/candidate?email=${localStorage.getItem('userEmail')}`).then(r=>r.json()),
+fetch(`${BACKEND_URL}/application/savedInternships?email=${localStorage.getItem('userEmail')}`).then(r=>r.json()),
+fetch(`${BACKEND_URL}/quiz/getResults?email=${localStorage.getItem('userEmail')}`).then(r=>r.json())
 ])
 .then(([user,apps,saved,quizData])=>{
 console.log('Analytics data:', {user, apps, saved, quizData});
@@ -1190,7 +1193,7 @@ function checkATSScore() {
     formData.append('resume', resumeFile);
     formData.append('jobDescription', jobDescription);
     
-    fetch('/ats/checkPDF', {
+    fetch(`${BACKEND_URL}/ats/checkPDF`, {
         method: 'POST',
         body: formData
     })
